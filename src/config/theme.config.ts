@@ -60,7 +60,7 @@ export const themeConfig = {
         // Entrance animation timing
         stagger: 0.08, // Delay between staggered items
         duration: 0.7, // Base animation duration
-        ease: [0.22, 1, 0.36, 1], // Smooth easing curve
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number], // Smooth easing curve
     },
 
     // ===== SPACING =====
