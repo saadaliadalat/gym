@@ -1,15 +1,20 @@
 import { motion } from "motion/react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { siteConfig } from "../../config/site.config";
+import { themeConfig, getAccentColors } from "../../config/theme.config";
 
 export function Hero() {
+  const accent = getAccentColors();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 z-0">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxneW0lMjBlcXVpcG1lbnQlMjBkYXJrfGVufDB8fHx8MTczNjc4MTg0N3ww&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="FitLab Training Floor"
+          src={siteConfig.gallery[0]?.url || "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920"}
+          alt={`${siteConfig.name} Training Floor`}
           className="w-full h-full object-cover"
         />
         {/* Dark overlay for contrast */}
@@ -19,151 +24,194 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 md:px-8 py-32 md:py-40">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: themeConfig.animation.ease }}
           className="max-w-5xl mx-auto"
         >
           {/* Headline - Commanding */}
           <div className="mb-12 md:mb-16">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mb-6"
             >
-              <span 
+              <span
                 className="inline-block px-4 py-2 border"
-                style={{ 
+                style={{
                   borderColor: "rgba(138, 138, 122, 0.3)",
                   fontSize: "0.8125rem",
                   letterSpacing: "0.12em",
-                  color: "#8A8A7A",
+                  color: themeConfig.colors.textMuted,
                   fontWeight: 600
                 }}
               >
-                MEN'S PERFORMANCE GYM
+                {siteConfig.tagline.toUpperCase()}
               </span>
             </motion.div>
-            
-            <h1 
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
               className="text-6xl md:text-8xl lg:text-9xl mb-8 tracking-tight leading-[0.9]"
-              style={{ 
-                fontFamily: "'Bebas Neue', sans-serif",
+              style={{
+                fontFamily: themeConfig.fonts.heading,
                 letterSpacing: "0.02em",
-                color: "#E8E8E8"
+                color: themeConfig.colors.textPrimary
               }}
             >
-              TRAIN WITH<br />
-              PURPOSE
-            </h1>
-            
-            <motion.p 
+              {siteConfig.headline.split('\n').map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i === 0 && <br />}
+                </span>
+              ))}
+            </motion.h1>
+
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
               className="text-base md:text-lg max-w-xl leading-relaxed"
-              style={{ 
+              style={{
                 fontWeight: 400,
-                color: "#9A9A9A",
-                lineHeight: "1.7"
+                color: themeConfig.colors.textSecondary,
+                lineHeight: "1.75"
               }}
             >
-              A fighter's lab in Fujairah. Strength training, combat conditioning, 
-              and performance coaching for men who take their training seriously.
+              {siteConfig.subheadline}
+            </motion.p>
+
+            {/* Urgency text */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="mt-4 flex items-center gap-2"
+              style={{
+                fontSize: "0.875rem",
+                color: accent.accent,
+                fontWeight: 500
+              }}
+            >
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: accent.primary }} />
+              {siteConfig.cta.urgency}
             </motion.p>
           </div>
 
-          {/* CTAs - Direct & Strong */}
+          {/* CTAs - Outcome Focused */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row gap-4 mb-20 md:mb-24"
           >
+            {/* Primary CTA - Distinct gold color */}
             <Button
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-7 rounded-sm transition-all duration-200 hover:translate-y-[-2px]"
-              onClick={() => window.open('https://wa.me/971501234567', '_blank')}
-              style={{ 
-                fontWeight: 700, 
+              className="group px-10 py-7 rounded-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
+              onClick={() => window.open(`https://wa.me/${siteConfig.contact.whatsapp}`, '_blank')}
+              style={{
+                fontWeight: 700,
                 letterSpacing: "0.08em",
-                fontSize: "0.875rem"
+                fontSize: "0.875rem",
+                backgroundColor: themeConfig.colors.cta,
+                color: themeConfig.colors.ctaText,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = themeConfig.colors.ctaHover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = themeConfig.colors.cta;
               }}
             >
-              BOOK A VISIT
+              {siteConfig.cta.primary}
+              <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Button>
+
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-accent/40 text-foreground hover:bg-accent/10 hover:border-accent px-10 py-7 rounded-sm transition-all duration-200"
+              className="border-2 px-10 py-7 rounded-sm transition-all duration-200"
               onClick={() => document.getElementById('programs')?.scrollIntoView({ behavior: 'smooth' })}
-              style={{ 
-                fontWeight: 700, 
+              style={{
+                fontWeight: 700,
                 letterSpacing: "0.08em",
-                fontSize: "0.875rem"
+                fontSize: "0.875rem",
+                borderColor: "rgba(138, 138, 122, 0.4)",
+                color: themeConfig.colors.textPrimary
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = accent.accent;
+                e.currentTarget.style.backgroundColor = "rgba(138, 138, 122, 0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(138, 138, 122, 0.4)";
+                e.currentTarget.style.backgroundColor = "transparent";
               }}
             >
-              VIEW PROGRAMS
+              {siteConfig.cta.secondary}
             </Button>
           </motion.div>
 
-          {/* Stats Bar */}
+          {/* Quick Stats Preview */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
+            transition={{ duration: 1, delay: 1 }}
             className="grid grid-cols-3 gap-8 md:gap-12 pt-8 border-t"
             style={{ borderColor: "rgba(138, 138, 122, 0.2)" }}
           >
             <div>
-              <p 
+              <p
                 className="mb-2 tracking-widest"
-                style={{ 
-                  fontFamily: "'Bebas Neue', sans-serif",
+                style={{
+                  fontFamily: themeConfig.fonts.heading,
                   fontSize: "2rem",
-                  color: "#4A5240",
+                  color: accent.primary,
                   letterSpacing: "0.05em"
                 }}
               >
-                6 DAYS
+                {siteConfig.stats.members}
               </p>
-              <p className="text-xs tracking-wider" style={{ color: "#8A8A7A", fontWeight: 600 }}>
-                WEEKLY
+              <p className="text-xs tracking-wider" style={{ color: themeConfig.colors.textMuted, fontWeight: 600 }}>
+                MEMBERS
               </p>
             </div>
-            
+
             <div>
-              <p 
+              <p
                 className="mb-2 tracking-widest"
-                style={{ 
-                  fontFamily: "'Bebas Neue', sans-serif",
+                style={{
+                  fontFamily: themeConfig.fonts.heading,
                   fontSize: "2rem",
-                  color: "#4A5240",
+                  color: accent.primary,
                   letterSpacing: "0.05em"
                 }}
               >
-                PRO
+                {siteConfig.stats.experience}
               </p>
-              <p className="text-xs tracking-wider" style={{ color: "#8A8A7A", fontWeight: 600 }}>
-                COACHING
+              <p className="text-xs tracking-wider" style={{ color: themeConfig.colors.textMuted, fontWeight: 600 }}>
+                YEARS
               </p>
             </div>
-            
+
             <div>
-              <p 
+              <p
                 className="mb-2 tracking-widest"
-                style={{ 
-                  fontFamily: "'Bebas Neue', sans-serif",
+                style={{
+                  fontFamily: themeConfig.fonts.heading,
                   fontSize: "2rem",
-                  color: "#4A5240",
+                  color: accent.primary,
                   letterSpacing: "0.05em"
                 }}
               >
-                NO BS
+                {siteConfig.stats.rating}★
               </p>
-              <p className="text-xs tracking-wider" style={{ color: "#8A8A7A", fontWeight: 600 }}>
-                RESULTS
+              <p className="text-xs tracking-wider" style={{ color: themeConfig.colors.textMuted, fontWeight: 600 }}>
+                RATING
               </p>
             </div>
           </motion.div>
@@ -171,9 +219,9 @@ export function Hero() {
       </div>
 
       {/* Subtle vignette */}
-      <div className="absolute inset-0 pointer-events-none" 
-        style={{ 
-          background: "radial-gradient(circle at center, transparent 0%, rgba(15, 15, 15, 0.6) 100%)" 
+      <div className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at center, transparent 0%, rgba(15, 15, 15, 0.6) 100%)"
         }}
       />
     </section>

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import { siteConfig } from "../../config/site.config";
+import { themeConfig } from "../../config/theme.config";
 
 export function Navigation() {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,10 +19,10 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { href: "#about", label: "ABOUT" },
-    { href: "#programs", label: "PROGRAMS" },
-    { href: "#schedule", label: "SCHEDULE" },
-    { href: "#location", label: "LOCATION" }
+    { href: "#about", label: "About" },
+    { href: "#programs", label: "Programs" },
+    { href: "#schedule", label: "Schedule" },
+    { href: "#location", label: "Location" }
   ];
 
   const handleNavClick = (href: string) => {
@@ -37,30 +39,30 @@ export function Navigation() {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: themeConfig.animation.ease }}
             className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b"
             style={{ borderColor: "rgba(138, 138, 122, 0.15)" }}
           >
             <div className="container mx-auto px-6 md:px-8 py-4">
               <div className="flex items-center justify-between">
                 {/* Logo */}
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="transition-opacity duration-200 hover:opacity-70"
                   onClick={(e) => {
                     e.preventDefault();
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                 >
-                  <span 
-                    style={{ 
-                      fontFamily: "'Bebas Neue', sans-serif",
+                  <span
+                    style={{
+                      fontFamily: themeConfig.fonts.heading,
                       fontSize: "1.75rem",
-                      color: "#E8E8E8",
+                      color: themeConfig.colors.textPrimary,
                       letterSpacing: "0.05em"
                     }}
                   >
-                    FITLAB
+                    {siteConfig.name}
                   </span>
                 </a>
 
@@ -75,27 +77,39 @@ export function Navigation() {
                         handleNavClick(link.href);
                       }}
                       className="transition-colors duration-200"
-                      style={{ 
-                        fontSize: "0.8125rem",
-                        color: "#9A9A9A",
-                        fontWeight: 600,
-                        letterSpacing: "0.08em"
+                      style={{
+                        fontSize: "0.875rem",
+                        color: themeConfig.colors.textSecondary,
+                        fontWeight: 500,
+                        letterSpacing: "0.02em"
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = "#E8E8E8"}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "#9A9A9A"}
+                      onMouseEnter={(e) => e.currentTarget.style.color = themeConfig.colors.textPrimary}
+                      onMouseLeave={(e) => e.currentTarget.style.color = themeConfig.colors.textSecondary}
                     >
                       {link.label}
                     </a>
                   ))}
-                  
+
                   <Button
                     size="sm"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-5 rounded-sm transition-all duration-200"
-                    onClick={() => window.open('https://wa.me/971501234567', '_blank')}
-                    style={{ fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.08em" }}
+                    className="px-6 py-5 rounded-sm transition-all duration-200"
+                    onClick={() => window.open(`https://wa.me/${siteConfig.contact.whatsapp}`, '_blank')}
+                    style={{
+                      fontWeight: 700,
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.08em",
+                      backgroundColor: themeConfig.colors.cta,
+                      color: themeConfig.colors.ctaText,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = themeConfig.colors.ctaHover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = themeConfig.colors.cta;
+                    }}
                   >
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    BOOK
+                    Book
                   </Button>
                 </div>
 
@@ -103,7 +117,7 @@ export function Navigation() {
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="md:hidden p-2 transition-colors duration-200"
-                  style={{ color: "#E8E8E8" }}
+                  style={{ color: themeConfig.colors.textPrimary }}
                 >
                   {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
@@ -128,7 +142,7 @@ export function Navigation() {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.3, ease: themeConfig.animation.ease }}
               className="absolute top-[73px] right-0 bottom-0 w-full max-w-sm bg-card border-l shadow-2xl"
               style={{ borderColor: "rgba(138, 138, 122, 0.15)" }}
               onClick={(e) => e.stopPropagation()}
@@ -146,17 +160,17 @@ export function Navigation() {
                       handleNavClick(link.href);
                     }}
                     className="block py-3 transition-colors duration-200"
-                    style={{ 
+                    style={{
                       fontSize: "1.25rem",
-                      fontFamily: "'Bebas Neue', sans-serif",
-                      color: "#E8E8E8",
+                      fontFamily: themeConfig.fonts.heading,
+                      color: themeConfig.colors.textPrimary,
                       letterSpacing: "0.05em"
                     }}
                   >
                     {link.label}
                   </motion.a>
                 ))}
-                
+
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -165,12 +179,17 @@ export function Navigation() {
                 >
                   <Button
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 rounded-sm"
-                    onClick={() => window.open('https://wa.me/971501234567', '_blank')}
-                    style={{ fontWeight: 700, letterSpacing: "0.08em" }}
+                    className="w-full py-6 rounded-sm"
+                    onClick={() => window.open(`https://wa.me/${siteConfig.contact.whatsapp}`, '_blank')}
+                    style={{
+                      fontWeight: 700,
+                      letterSpacing: "0.08em",
+                      backgroundColor: themeConfig.colors.cta,
+                      color: themeConfig.colors.ctaText,
+                    }}
                   >
                     <MessageCircle className="w-5 h-5 mr-2" />
-                    BOOK NOW
+                    Book Now
                   </Button>
                 </motion.div>
               </div>
